@@ -1,7 +1,12 @@
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
-  if (req.method === "OPTIONS") { res.status(200).end(); return; }
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  
+  if (req.method === "OPTIONS") { 
+    res.status(200).end(); 
+    return; 
+  }
 
   try {
     const redisRes = await fetch(`${process.env.UPSTASH_REDIS_REST_URL}/get/spotify_token`, {
@@ -10,13 +15,13 @@ export default async function handler(req, res) {
     const redisData = await redisRes.json();
 
     if (!redisData.result) { 
-      res.status(404).json({ error: "Token no disponible" }); 
+      res.status(200).json({ error: "Token no disponible" }); 
       return; 
     }
 
     const token = JSON.parse(decodeURIComponent(redisData.result));
     res.status(200).json(token);
   } catch(err) {
-    res.status(500).json({ error: err.message });
+    res.status(200).json({ error: err.message });
   }
 }
