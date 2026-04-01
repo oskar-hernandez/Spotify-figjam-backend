@@ -21,18 +21,17 @@ export default async function handler(req, res) {
   const data = await tokenRes.json();
 
   if (data.access_token) {
-    await fetch(`${process.env.UPSTASH_REDIS_REST_URL}/set/spotify_token/${encodeURIComponent(JSON.stringify(data))}`, {
+    const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
+    const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+    
+    const redisRes = await fetch(`${redisUrl}/set/spotify_token/${encodeURIComponent(JSON.stringify(data))}`, {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      }
+      headers: { Authorization: `Bearer ${redisToken}` }
     });
+    const redisData = await redisRes.json();
 
-    res.send(`<html><body style="font-family:sans-serif;background:#121212;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;flex-direction:column;gap:12px">
-      <h2 style="color:#1DB954">Conectado a Spotify</h2>
-      <p style="color:#b3b3b3">Puedes cerrar esta ventana.</p>
-    </body></html>`);
-  } else {
-    res.status(500).json({ error: "No se pudo obtener el token", details: data });
-  }
+    res.send(`<html><body style="font-family:sans-serif;background:#121212;color:#fff;padding:40px;">
+      <h2 style="color:#1DB954">Debug info</h2>
+      <p>Redis URL: ${redisUrl ? redisUrl.substring(0, 30) + '...' : 'MISSING'}</p>
+      <p>Redis Token: ${redisToken ? 'OK' : 'MISS  }
 }
