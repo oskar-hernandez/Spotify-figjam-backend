@@ -1,4 +1,4 @@
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   if (req.method === "OPTIONS") { res.status(200).end(); return; }
 
@@ -11,4 +11,4 @@ module.exports = async function handler(req, res) {
 
   const token = JSON.parse(redisData.result);
   res.status(200).json(token);
-};
+}
