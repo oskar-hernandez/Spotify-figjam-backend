@@ -1,7 +1,14 @@
 module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  const stored = global.__spotifyToken;
-  if (!stored?.refresh_token) { res.status(401).json({ error: "No hay refresh token" }); return; }
+
+  const redisRes = await fetch(`${process.env.UPSTASH_REDIS_REST_URL}/get/spotify_token`, {
+    headers: { Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}` }
+  });
+  const redisData = await redisRes.json();
+  if (!redisData.result) { res.status(401).json({ error: "No hay token guardado" }); return; }
+
+  const stored = JSON.parse(decodeURIComponent(redisData.result));
+  if (!stored.refresh_token) { res.status(401).json({ error: "No hay refresh token" }); return; }
 
   const credentials = Buffer.from(
     `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`
@@ -15,7 +22,10 @@ module.exports = async function handler(req, res) {
   const data = await tokenRes.json();
 
   if (data.access_token) {
-    global.__spotifyToken = { ...stored, access_token: data.access_token };
+    const updated = { ...stored, access_token: data.access_token };
+    await fetch(`${process.env.UPSTASH_REDIS_REST_URL}/set/spotify_token/${encodeURIComponent(JSON.stringify(updated))}`, {
+      headers: { Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}` }
+    });
     res.status(200).json({ access_token: data.access_token, expires_in: data.expires_in });
   } else {
     res.status(500).json({ error: "No se pudo refrescar" });
