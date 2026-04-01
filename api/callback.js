@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   const body = new URLSearchParams({
     grant_type: "authorization_code",
     code,
-    redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
+    redirect_uri: "https://spotify-figjam-backend-oskar-hernandezs-projects.vercel.app/api/callback",
   });
 
   const tokenRes = await fetch("https://accounts.spotify.com/api/token", {
