@@ -2,10 +2,10 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "*");
-  
-  if (req.method === "OPTIONS") { 
-    res.status(200).end(); 
-    return; 
+
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
   }
 
   try {
@@ -14,9 +14,9 @@ export default async function handler(req, res) {
     });
     const redisData = await redisRes.json();
 
-    if (!redisData.result) { 
-      res.status(200).json({ error: "Token no disponible" }); 
-      return; 
+    if (!redisData.result) {
+      res.status(200).json({ error: "Token no disponible" });
+      return;
     }
 
     const token = JSON.parse(decodeURIComponent(redisData.result));
