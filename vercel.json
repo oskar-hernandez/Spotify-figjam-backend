@@ -1,0 +1,16 @@
+{
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs20.x"
+    }
+  }
+}
+```
+
+4. **"Commit changes"**
+
+Luego ve a Vercel → Deployments → `···` → **Redeploy**.
+
+Esta vez debería funcionar. Si sigue dando 404, prueba a acceder directamente a un endpoint específico para ver si responde:
+```
+https://spotify-figjam-backend.vercel.app/api/auth
