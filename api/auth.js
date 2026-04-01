@@ -4,7 +4,6 @@ export default function handler(req, res) {
     response_type: "code",
     redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
     scope: "user-read-playback-state user-modify-playback-state user-read-currently-playing",
-    show_dialog: "true",
   });
   res.redirect(`https://accounts.spotify.com/authorize?${params.toString()}`);
 }
