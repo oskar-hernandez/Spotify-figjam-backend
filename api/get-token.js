@@ -7,8 +7,8 @@ module.exports = async function handler(req, res) {
   });
   const redisData = await redisRes.json();
 
-  if (!redisData.result) { res.status(404).json({ error: "Token no disponible" }); return; }
+  if (!redisData.result) { res.status(404).json({ error: "Token no disponible aún" }); return; }
 
-  const token = JSON.parse(decodeURIComponent(redisData.result));
+  const token = JSON.parse(redisData.result);
   res.status(200).json(token);
 };
