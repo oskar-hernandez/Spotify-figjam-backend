@@ -33,5 +33,11 @@ export default async function handler(req, res) {
     res.send(`<html><body style="font-family:sans-serif;background:#121212;color:#fff;padding:40px;">
       <h2 style="color:#1DB954">Debug info</h2>
       <p>Redis URL: ${redisUrl ? redisUrl.substring(0, 30) + '...' : 'MISSING'}</p>
-      <p>Redis Token: ${redisToken ? 'OK' : 'MISS  }
+      <p>Redis Token: ${redisToken ? 'OK' : 'MISSING'}</p>
+      <p>Redis response: ${JSON.stringify(redisData)}</p>
+      <p>Token OK: ${data.access_token ? 'YES' : 'NO'}</p>
+    </body></html>`);
+  } else {
+    res.status(500).json({ error: "No se pudo obtener el token", details: data });
+  }
 }
