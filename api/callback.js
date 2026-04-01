@@ -34,4 +34,12 @@ export default async function handler(req, res) {
         <p style="color:#b3b3b3">Puedes cerrar esta ventana y volver a FigJam.</p>
       </body></html>`);
     } else {
-      res.send(`<html><body style="font-family:sans-serif;background:#121212;color:#fff;display:flex;align-items:center;justify-content:center;height:10
+      res.send(`<html><body style="font-family:sans-serif;background:#121212;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;flex-direction:column;gap:12px">
+        <h2 style="color:#e74c3c">Error</h2>
+        <p style="color:#b3b3b3">${JSON.stringify(data)}</p>
+      </body></html>`);
+    }
+  } catch (err) {
+    res.status(500).send(`Error: ${err.message}`);
+  }
+}
