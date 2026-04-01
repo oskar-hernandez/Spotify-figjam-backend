@@ -1,4 +1,4 @@
-module.exports = function handler(req, res) {
+export default function handler(req, res) {
   const params = new URLSearchParams({
     client_id: process.env.SPOTIFY_CLIENT_ID,
     response_type: "code",
@@ -7,4 +7,4 @@ module.exports = function handler(req, res) {
     show_dialog: "true",
   });
   res.redirect(`https://accounts.spotify.com/authorize?${params.toString()}`);
-};
+}
