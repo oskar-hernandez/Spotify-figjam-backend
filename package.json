@@ -1,5 +1,9 @@
 {
   "name": "spotify-figjam-backend",
-  "version": "1.0.0",
-  "type": "module"
+  "version": "1.0.0"
 }
+```
+
+Después de editar los 4 archivos y el `package.json`, haz **Redeploy** en Vercel y prueba la URL:
+```
+https://spotify-figjam-backend.vercel.app/api/auth
